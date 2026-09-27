@@ -227,11 +227,11 @@ footer .who{font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);marg
       <p class="cap">GROWTH LADDER ─ 結果はこの5段階のどこかに落ちます</p>
       <div class="stem"><i id="stemFill"></i></div>
       <div class="stops">
-        <div class="stop"><span>充電期</span><em>0–23</em></div>
-        <div class="stop f2"><span>土づくり</span><em>24–47</em></div>
-        <div class="stop f2"><span>つぼみ</span><em>48–71</em></div>
-        <div class="stop f1"><span>開花直前</span><em>72–95</em></div>
-        <div class="stop f1"><span>開花</span><em>96–120</em></div>
+        <div class="stop"><span>充電中</span><em>0–23</em></div>
+        <div class="stop f2"><span>ためし中</span><em>24–47</em></div>
+        <div class="stop f2"><span>発揮はじめ</span><em>48–71</em></div>
+        <div class="stop f1"><span>らしさ定着</span><em>72–95</em></div>
+        <div class="stop f1"><span>才能全開</span><em>96–120</em></div>
       </div>
     </div>
 
@@ -406,11 +406,11 @@ const QS = [
 ];
 
 const PHASES = [
-  {lo:96,hi:120,name:"開花",     color:"#9C7716", bg:"#F4EBD3", desc:"すでに自己実現を生きています。次は「広げる・渡す」段階。"},
-  {lo:72,hi:95, name:"開花直前", color:"#C0331C", bg:"#FAE7E1", desc:"持ち味と場がつながり始めました。あと一歩で習慣になります。"},
-  {lo:48,hi:71, name:"つぼみ",   color:"#2F5340", bg:"#E4EDDD", desc:"気づきはあります。発揮の場と自己承認が足りないだけ。"},
-  {lo:24,hi:47, name:"土づくり", color:"#554C7A", bg:"#E9E6F0", desc:"持ち味はあります。まだ隠しているか、使う許可が出ていません。"},
-  {lo:0, hi:23, name:"充電期",   color:"#5F6A62", bg:"#E7EAE3", desc:"まず安心と休息を。点数が低いのは、力の問題ではありません。"}
+  {lo:96,hi:120,name:"才能全開",   color:"#9C7716", bg:"#F4EBD3", desc:"才能を発揮して、自分らしく生きられています。次は、そのあり方を人に渡す段階。"},
+  {lo:72,hi:95, name:"らしさ定着", color:"#C0331C", bg:"#FAE7E1", desc:"発揮する場が日常になってきました。あと一歩で、自分らしさが当たり前になります。"},
+  {lo:48,hi:71, name:"発揮はじめ", color:"#2F5340", bg:"#E4EDDD", desc:"気づきはあります。発揮する場と、自分を認める力が増えれば一気に伸びます。"},
+  {lo:24,hi:47, name:"ためし中",   color:"#554C7A", bg:"#E9E6F0", desc:"持ち味はあるのに、まだ隠しているか、使う許可が出ていない状態。"},
+  {lo:0, hi:23, name:"充電中",     color:"#5F6A62", bg:"#E7EAE3", desc:"まずは安心と休息を。点数が低いのは、力がないからではありません。"}
 ];
 
 const ONE_ACTION = [
@@ -742,7 +742,7 @@ function questionnaireMarkdown(){
     t += "\n";
   }
   t += "## 採点\n\n- 各軸＝6問の合計（0〜24点）\n- 総合＝30問の合計（0〜120点）\n\n";
-  t += "## フェーズ\n\n96-120 開花 / 72-95 開花直前 / 48-71 つぼみ / 24-47 土づくり / 0-23 充電期\n";
+  t += "## フェーズ\n\n96-120 才能全開 / 72-95 らしさ定着 / 48-71 発揮はじめ / 24-47 ためし中 / 0-23 充電中\n";
   return t;
 }
 
