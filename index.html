@@ -132,14 +132,6 @@ p.lead{color:var(--ink-soft);margin:0 0 10px}
 .panel table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .panel td{padding:4px 0;vertical-align:top;font-size:13.5px;color:var(--ink-soft)}
 .panel td:first-child{font-family:var(--mono);font-weight:500;color:var(--moss);width:22px;padding-right:8px}
-details{margin:0 0 26px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
-details summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:700;color:var(--moss);list-style:none}
-details summary::-webkit-details-marker{display:none}
-details summary::before{content:"＋";font-family:var(--mono);margin-right:9px;color:var(--sprout)}
-details[open] summary::before{content:"−"}
-details pre{margin:0;padding:16px 18px;border-top:1px solid var(--line-soft);max-height:300px;overflow:auto;
-  font-family:var(--mono);font-size:11.5px;line-height:1.75;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
-details .pfoot{padding:0 18px 16px}
 
 /* ============ submit ============ */
 .submit-area{text-align:center;padding:44px 0 14px}
@@ -270,11 +262,6 @@ footer .who{font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);marg
       <p class="lead">3分から5分で終わります。最後まで答えると、結果をレーダーチャート画像で持ち帰れます。</p>
       <p class="lead" style="font-size:13px;color:var(--muted)">※ 結果はCocoro Laboに届き、あなたへのサポートにだけ使います。</p>
 
-      <details>
-        <summary>この診断をマークダウン原稿で使う（AIチャット用の台本をコピー）</summary>
-        <pre id="mdOut"></pre>
-        <div class="pfoot"><button class="btn" id="mdCopy">マークダウンをコピーする</button></div>
-      </details>
     </div>
   </section>
 
@@ -729,26 +716,9 @@ function resultMarkdown(){
   t += "今日できる1つ："+ONE_ACTION[iLow]+"\n";
   return t;
 }
-function questionnaireMarkdown(){
-  let t = "# 自己実現度診断（30問・120点）\n\n";
-  t += "> 自己実現＝自分の持ち味を発揮して、自分らしく生きている状態\n\n";
-  t += "0=ちがう / 1=あまり / 2=ふつう / 3=わりと / 4=そう\n\n";
-  for(let a=0;a<5;a++){
-    t += "## "+(a+1)+". "+AXES[a]+"\n\n";
-    for(let k=0;k<6;k++){
-      const i=a*6+k;
-      t += "- Q"+(i+1)+". "+QS[i].t+(QS[i].w?"（+2の壁）":"")+"\n";
-    }
-    t += "\n";
-  }
-  t += "## 採点\n\n- 各軸＝6問の合計（0〜24点）\n- 総合＝30問の合計（0〜120点）\n\n";
-  t += "## フェーズ\n\n96-120 才能全開 / 72-95 らしさ定着 / 48-71 発揮はじめ / 24-47 ためし中 / 0-23 充電中\n";
-  return t;
-}
 
 /* ================= 起動 ================= */
 buildQuiz();
-document.getElementById("mdOut").textContent = questionnaireMarkdown();
 
 document.getElementById("startBtn").addEventListener("click", ()=>{
   const n = window.prompt("お名前（ニックネームでOK）を入れてください。空欄でも進めます。","");
@@ -770,9 +740,6 @@ document.getElementById("resultBtn").addEventListener("click", ()=>{
 document.getElementById("saveBtn").addEventListener("click", saveImage);
 document.getElementById("copyBtn").addEventListener("click", function(){
   copyText(resultMarkdown(), this, "結果をコピーする");
-});
-document.getElementById("mdCopy").addEventListener("click", function(){
-  copyText(questionnaireMarkdown(), this, "マークダウンをコピーする");
 });
 document.getElementById("againBtn").addEventListener("click", ()=>{
   answers.fill(null);
