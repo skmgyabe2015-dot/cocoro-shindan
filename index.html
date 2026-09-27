@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自己実現度診断 ─ Cocoro Labo</title>
+<meta name="description" content="自分の持ち味を発揮して、自分らしく生きている状態か。30問・5つの軸で測る自己実現度診断。結果はレーダーチャート画像で持ち帰れます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16211A;
+  --ink-soft:#414F46;
+  --muted:#79857C;
+  --ground:#EDF0EA;
+  --paper:#FFFFFF;
+  --moss:#2F5340;
+  --moss-2:#48705A;
+  --sprout:#6E9C5A;
+  --sprout-wash:#E4EDDD;
+  --kurenai:#C0331C;
+  --kurenai-wash:#FAE7E1;
+  --gold:#9C7716;
+  --line:#D3DACF;
+  --line-soft:#E4E8DF;
+  --r:2px;
+  --serif:"Shippori Mincho","Yu Mincho",YuMincho,"Hiragino Mincho ProN",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --rail:34px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.9;font-feature-settings:"palt" 1}
+.wrap{max-width:840px;margin:0 auto;padding:0 22px}
+a{color:var(--moss)}
+h1,h2,h3{font-family:var(--serif)}
+
+/* ============ hero ============ */
+.hero{padding:70px 0 0;position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,rgba(110,156,90,.20),rgba(110,156,90,0) 68%);
+  pointer-events:none
+}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--moss-2);margin:0 0 30px}
+.hero h1{font-weight:700;font-size:clamp(27px,6.2vw,46px);line-height:1.5;margin:0 0 6px;letter-spacing:.005em}
+.hero h1 .em{color:var(--kurenai)}
+.hero .sub{font-family:var(--serif);font-size:clamp(15px,3.5vw,19px);color:var(--ink-soft);margin:20px 0 0}
+
+/* 成長のはしご＝この診断の背骨 */
+.ladder{margin:40px 0 0;padding:26px 0 0;border-top:1px solid var(--line)}
+.ladder .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--muted);margin:0 0 22px}
+.stem{position:relative;height:2px;background:var(--line);margin:0 12px 0 8px}
+.stem i{position:absolute;top:0;height:2px;background:linear-gradient(90deg,var(--sprout),var(--moss-2));left:0;width:0}
+.stops{display:flex;justify-content:space-between;margin:0 -2px}
+.stop{flex:1;text-align:center;position:relative;padding-top:16px}
+.stop::before{content:"";position:absolute;top:-25px;left:50%;transform:translateX(-50%);
+  width:11px;height:11px;border-radius:50%;border:2px solid var(--line);background:var(--paper)}
+.stop.f1::before{border-color:var(--moss);background:var(--moss)}
+.stop.f2::before{border-color:var(--moss)}
+.stop span{display:block;font-family:var(--serif);font-size:13px;font-weight:600;color:var(--ink-soft)}
+.stop em{display:block;font-family:var(--mono);font-size:9.5px;font-style:normal;color:var(--muted);letter-spacing:.06em}
+blockquote.def{margin:40px 0 0;padding:16px 20px 16px 22px;border-left:3px solid var(--sprout);
+  background:var(--paper);border-radius:0 var(--r) var(--r) 0;font-size:14.5px;line-height:1.85;color:var(--ink-soft)}
+blockquote.def b{color:var(--ink)}
+.spec{display:flex;flex-wrap:wrap;gap:0;margin:34px 0 36px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.spec div{flex:1 1 25%;min-width:110px;padding:14px 6px 13px;border-right:1px solid var(--line-soft);text-align:center}
+.spec div:last-child{border-right:none}
+.spec dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:3px}
+.spec dd{margin:0;font-family:var(--serif);font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.cta{display:inline-block;border:none;cursor:pointer;font-family:var(--sans);background:var(--ink);
+  color:#fff;font-size:16px;font-weight:700;padding:16px 46px;border-radius:var(--r);letter-spacing:.05em;
+  transition:background .18s ease}
+.cta:hover{background:var(--moss)}
+.cta:active{transform:translateY(1px)}
+.hero-end{height:64px}
+
+/* ============ sections ============ */
+section{padding:46px 0}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--moss-2);margin:0 0 10px}
+h2.sec{font-weight:700;font-size:clamp(20px,4.2vw,26px);margin:0 0 14px;line-height:1.5}
+p.lead{color:var(--ink-soft);margin:0 0 10px}
+
+/* ============ progress ============ */
+.progress{position:sticky;top:0;z-index:30;background:rgba(237,240,234,.95);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft);padding:9px 0}
+.progress .wrap{display:flex;align-items:center;gap:14px}
+.progress .bar{flex:1;height:3px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress .bar i{display:block;height:100%;width:0;background:var(--sprout);transition:width .3s ease}
+.progress .num{font-family:var(--mono);font-size:12px;color:var(--moss);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ============ 成長のはしら（質問リストの背骨） ============ */
+#quizWrap{position:relative}
+#quizWrap::before{content:"";position:absolute;left:5px;top:8px;bottom:36px;width:1px;background:var(--line)}
+.axis-group{position:relative}
+.axis-head{display:flex;align-items:baseline;gap:12px;margin:54px 0 0;padding-left:var(--rail);flex-wrap:wrap}
+.axis-head:first-child{margin-top:6px}
+.axis-head::before{content:"";position:absolute;left:0;top:9px;width:11px;height:11px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--moss)}
+.axis-head .idx{font-family:var(--mono);font-size:11px;color:var(--paper);background:var(--moss);
+  padding:2px 7px;border-radius:var(--r);letter-spacing:.06em}
+.axis-head h3{font-weight:700;font-size:20px;margin:0}
+.axis-head .note{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.axis-intro{font-size:13.5px;color:var(--muted);margin:9px 0 4px;padding-left:var(--rail)}
+
+/* ============ question ============ */
+.q{padding:18px 0 20px;border-bottom:1px solid var(--line-soft);padding-left:var(--rail)}
+.q .qtext{display:block;font-family:var(--serif);font-size:16.5px;font-weight:500;line-height:1.75;margin:0 0 14px}
+.q .qno{font-family:var(--mono);font-size:11px;color:var(--sprout);margin-right:9px;letter-spacing:.04em}
+.q .wall{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid var(--gold);
+  padding:1px 6px;border-radius:var(--r);margin-left:9px;vertical-align:2px;letter-spacing:.06em;white-space:nowrap}
+.scale{width:100%;border-collapse:collapse;table-layout:fixed}
+.scale td{border:1px solid var(--line);padding:0}
+.scale td:first-child{border-radius:var(--r) 0 0 var(--r)}
+.scale td:last-child{border-radius:0 var(--r) var(--r) 0}
+.scale td+td{border-left:none}
+.scale button{display:block;width:100%;border:none;background:transparent;cursor:pointer;
+  padding:9px 2px 8px;font-family:var(--sans);color:var(--ink-soft);transition:background .14s ease,color .14s ease}
+.scale button:hover{background:var(--sprout-wash)}
+.scale button .n{display:block;font-family:var(--mono);font-size:15px;line-height:1.2}
+.scale button .t{display:block;font-size:10px;color:var(--muted);line-height:1.3;letter-spacing:.02em}
+.scale button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.scale button[aria-pressed="true"] .t{color:#C6D2C1}
+.scale td.on{border-color:var(--ink)}
+.scale button:focus-visible{outline:2px solid var(--kurenai);outline-offset:-3px}
+
+/* ============ legend / markdown ============ */
+.panel{border:1px solid var(--line);border-radius:var(--r);background:var(--paper);padding:18px 20px;margin:0 0 26px}
+.panel table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.panel td{padding:4px 0;vertical-align:top;font-size:13.5px;color:var(--ink-soft)}
+.panel td:first-child{font-family:var(--mono);font-weight:500;color:var(--moss);width:22px;padding-right:8px}
+details{margin:0 0 26px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+details summary{cursor:pointer;padding:14px 18px;font-size:14px;font-weight:700;color:var(--moss);list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"＋";font-family:var(--mono);margin-right:9px;color:var(--sprout)}
+details[open] summary::before{content:"−"}
+details pre{margin:0;padding:16px 18px;border-top:1px solid var(--line-soft);max-height:300px;overflow:auto;
+  font-family:var(--mono);font-size:11.5px;line-height:1.75;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
+details .pfoot{padding:0 18px 16px}
+
+/* ============ submit ============ */
+.submit-area{text-align:center;padding:44px 0 14px}
+.msg{font-size:14px;margin:14px 0 0;min-height:1.5em;color:var(--kurenai)}
+
+/* ============ result ============ */
+#result{display:none;padding-top:6px}
+.res-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;margin:0 0 26px}
+.res-top{text-align:center;padding-bottom:20px;border-bottom:1px solid var(--line-soft);margin-bottom:22px}
+.res-top .name{font-family:var(--serif);font-size:16px;color:var(--muted);margin:0 0 3px}
+.res-top .score{font-family:var(--serif);font-weight:800;font-size:clamp(50px,12vw,74px);line-height:1;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:0}
+.res-top .score small{font-size:.28em;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:6px}
+.res-top .phase{display:inline-block;margin-top:14px;font-family:var(--serif);font-weight:700;font-size:21px;
+  padding:5px 20px;border-radius:99px;letter-spacing:.06em}
+.res-top .phdesc{font-size:13.5px;color:var(--muted);margin:12px 0 0}
+#canvasBox{max-width:100%;margin:0 auto}
+#card{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:var(--r)}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0 4px}
+.btn{border:1px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;font-family:var(--sans);
+  font-size:14.5px;font-weight:700;padding:13px 24px;border-radius:var(--r);transition:background .16s,color .16s}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.primary{background:var(--kurenai);border-color:var(--kurenai);color:#fff}
+.btn.primary:hover{background:#a02a16;border-color:#a02a16}
+.hint{font-size:12px;color:var(--muted);text-align:center;margin:12px 0 0}
+
+table.axes{width:100%;border-collapse:collapse;margin:6px 0 24px;font-variant-numeric:tabular-nums}
+table.axes th,table.axes td{padding:11px 8px;border-bottom:1px solid var(--line-soft);text-align:left}
+table.axes th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--muted);
+  font-weight:400;border-bottom:1px solid var(--ink)}
+table.axes td.n{text-align:right;font-family:var(--mono);font-size:14px;font-weight:500}
+table.axes tr.hi{background:var(--sprout-wash)}
+table.axes tr.hi td:first-child{font-weight:700}
+.dneg{color:var(--kurenai)}.dzer{color:var(--moss)}.dpos{color:var(--gold)}
+
+.finding{border-left:3px solid var(--ink);padding:2px 0 2px 18px;margin:0 0 20px}
+.finding .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted)}
+.finding .val{font-family:var(--serif);font-weight:700;font-size:19px;margin:3px 0 4px}
+.finding p{margin:0;font-size:14px;color:var(--ink-soft)}
+.finding.warn{border-left-color:var(--kurenai);background:var(--kurenai-wash);padding:14px 18px;border-radius:0 var(--r) var(--r) 0}
+.one-action{background:var(--ink);color:#fff;border-radius:var(--r);padding:22px 24px;margin:0 0 24px}
+.one-action .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:#9FB39C;margin:0 0 8px}
+.one-action p{margin:0;font-family:var(--serif);font-size:18px;line-height:1.7;font-weight:500}
+.guide{background:var(--sprout-wash);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px}
+.guide .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--moss);margin:0 0 10px}
+.guide h3{font-size:19px;margin:0 0 8px;font-weight:700}
+.guide p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+.guide .ph{color:var(--kurenai);border-bottom:1px dashed var(--kurenai);font-weight:700}
+.reset{text-align:center;padding:28px 0 0}
+.reset button{background:none;border:none;color:var(--muted);font-family:var(--sans);font-size:13.5px;
+  text-decoration:underline;cursor:pointer;padding:8px}
+
+footer{padding:40px 0 60px;border-top:1px solid var(--line);margin-top:36px}
+footer .fdef{font-size:13px;color:var(--muted);margin:0 0 6px}
+footer .who{font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);margin:0}
+
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero .eyebrow{animation:up .5s ease both}
+.hero h1{animation:up .5s .07s ease both}
+.hero .sub{animation:up .5s .14s ease both}
+.ladder{animation:up .5s .21s ease both}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media (max-width:560px){
+  :root{--rail:26px}
+  .q .qtext{font-size:15.5px}
+  .scale button{padding:8px 1px 7px}
+  .scale button .t{font-size:9.5px}
+  .axis-head .note{display:none}
+  .res-card{padding:24px 16px}
+  .spec div{flex:1 1 50%}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">COCORO LABO / 自己実現度診断</p>
+    <h1>あなたの持ち味は、<br>いま<span class="em">どの土</span>にありますか。</h1>
+    <p class="sub">30問・5つの軸で測る、自己実現度診断。</p>
+
+    <div class="ladder">
+      <p class="cap">GROWTH LADDER ─ 結果はこの5段階のどこかに落ちます</p>
+      <div class="stem"><i id="stemFill"></i></div>
+      <div class="stops">
+        <div class="stop"><span>充電期</span><em>0–23</em></div>
+        <div class="stop f2"><span>土づくり</span><em>24–47</em></div>
+        <div class="stop f2"><span>つぼみ</span><em>48–71</em></div>
+        <div class="stop f1"><span>開花直前</span><em>72–95</em></div>
+        <div class="stop f1"><span>開花</span><em>96–120</em></div>
+      </div>
+    </div>
+
+    <blockquote class="def">
+      <b>自己実現</b>＝自分の持ち味を発揮して、自分らしく生きている状態。<br>
+      点数は、できる・できないの判定ではありません。<b>いま、どこにいるか</b>です。
+    </blockquote>
+
+    <div class="spec">
+      <div><dt>QUESTIONS</dt><dd>30問</dd></div>
+      <div><dt>AXES</dt><dd>5つの軸</dd></div>
+      <div><dt>SCORE</dt><dd>0–120点</dd></div>
+      <div><dt>TAKE AWAY</dt><dd>画像で保存</dd></div>
+    </div>
+
+    <button class="cta" id="startBtn">診断をはじめる</button>
+  </div>
+  <div class="hero-end"></div>
+</header>
+
+<main>
+  <section id="intro">
+    <div class="wrap">
+      <p class="slabel">/// READ ME</p>
+      <h2 class="sec">答えるときの約束</h2>
+      <p class="lead">思いついた瞬間の答えが、いちばん正確です。考え込まないでください。</p>
+      <div class="panel">
+        <table>
+          <tr><td>0</td><td>ちがう ─ まったくあてはまらない</td></tr>
+          <tr><td>1</td><td>あまり ─ どちらかといえばあてはまらない</td></tr>
+          <tr><td>2</td><td>ふつう ─ どちらでもない</td></tr>
+          <tr><td>3</td><td>わりと ─ わりとあてはまる</td></tr>
+          <tr><td>4</td><td>そう ─ とてもあてはまる</td></tr>
+        </table>
+      </div>
+      <p class="lead">3分から5分で終わります。最後まで答えると、結果をレーダーチャート画像で持ち帰れます。</p>
+      <p class="lead" style="font-size:13px;color:var(--muted)">※ 結果はCocoro Laboに届き、あなたへのサポートにだけ使います。</p>
+
+      <details>
+        <summary>この診断をマークダウン原稿で使う（AIチャット用の台本をコピー）</summary>
+        <pre id="mdOut"></pre>
+        <div class="pfoot"><button class="btn" id="mdCopy">マークダウンをコピーする</button></div>
+      </details>
+    </div>
+  </section>
+
+  <div class="progress" id="progressBar" style="display:none">
+    <div class="wrap">
+      <div class="bar"><i id="barFill"></i></div>
+      <span class="num" id="barNum">0 / 30</span>
+    </div>
+  </div>
+
+  <section id="quizSection" style="padding-top:30px">
+    <div class="wrap"><div id="quizWrap"><div id="quiz"></div></div></div>
+  </section>
+
+  <section id="submitSection" style="display:none">
+    <div class="wrap submit-area">
+      <button class="cta" id="resultBtn">結果を見る</button>
+      <p class="msg" id="warnMsg"></p>
+    </div>
+  </section>
+
+  <section id="result">
+    <div class="wrap">
+      <p class="slabel">/// RESULT</p>
+      <h2 class="sec">診断結果</h2>
+
+      <div class="res-card">
+        <div class="res-top">
+          <p class="name" id="rName"></p>
+          <p class="score"><span id="rScore">0</span><small>/ 120点</small></p>
+          <div><span class="phase" id="rPhase">－</span></div>
+          <p class="phdesc" id="rPhaseDesc"></p>
+        </div>
+
+        <div id="canvasBox">
+          <canvas id="card" width="1000" height="1400" aria-label="自己実現度のレーダーチャート"></canvas>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="saveBtn">画像で保存する</button>
+          <button class="btn" id="copyBtn">結果をコピーする</button>
+        </div>
+        <p class="hint" id="saveHint">うまく保存できないときは、画像を長押しして「写真に保存」してください。</p>
+        <p class="hint" id="sendState"></p>
+      </div>
+
+      <h2 class="sec" style="font-size:20px">5つの軸</h2>
+      <table class="axes" id="axisTable"></table>
+
+      <div class="finding" id="fNear"></div>
+      <div class="finding" id="fHigh"></div>
+      <div class="finding" id="fLow"></div>
+      <div class="finding warn" id="fWarn" style="display:none"></div>
+
+      <div class="one-action">
+        <p class="cap">TODAY'S ONE ACTION</p>
+        <p id="oneAction"></p>
+      </div>
+
+      <div class="guide">
+        <p class="cap">HOW TO GROW / この軸の伸ばし方</p>
+        <h3 id="guideTitle"></h3>
+        <p id="guideText"></p>
+      </div>
+
+      <div class="reset"><button id="againBtn">もう一度受ける</button></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="fdef">自己実現＝自分の持ち味を発揮して、自分らしく生きている状態</p>
+    <p class="who">Cocoro Labo ／ 自己実現度診断 ／ 5軸30問・120点満点</p>
+  </div>
+</footer>
+
+<script>
+/* ================= 設問データ ================= */
+const AXES = ["持ち味の言語化","持ち味の発揮","自分らしさ","自己承認","予祝・未来志向"];
+const AXIS_NOTE = ["気づいているか","使えているか","一致しているか","自分をOKとできているか","未来を先取りできているか"];
+const AXIS_INTRO = [
+  "自分の持ち味を、自分の言葉で説明できるか。ここが出発点になります。",
+  "気づくだけで終わらず、実際に使い、役割や信頼を受け取れているか。",
+  "本音と行動がつながっているか。ここが低いと、我慢で持ちこたえる日が増えます。",
+  "うまくいかない日でも、自分の価値を保てる土台があるか。全部の軸を支える地面です。",
+  "未来を先に受け取って、今日動けているか。"
+];
+const SCALE = ["ちがう","あまり","ふつう","わりと","そう"];
+const TARGET_STD = 18;
+/* ▼ 自動集計の送信先（Google Apps Script のウェブアプリURL）。空欄なら送信しない */
+const ENDPOINT = "";
+const MAX_AXIS = 24;
+
+const QS = [
+  {a:0,t:"自分の「持ち味」を、人に3つ以上すぐ言える"},
+  {a:0,t:"人から褒められたとき、素直に「そうなんです」と受け取れる"},
+  {a:0,t:"やっていて時間を忘れることを、1つ以上説明できる"},
+  {a:0,t:"短所だと思っていたところが、持ち味の裏返しかもしれないと捉えられる"},
+  {a:0,t:"自分の取扱説明書（こういう時にこうなる、というパターン）を人に説明できる"},
+  {a:0,t:"自分の持ち味を、わが子や周りの人が使える言葉や手順に翻訳して渡せる",w:1},
+
+  {a:1,t:"週に1回以上、自分の持ち味を使う場面がある"},
+  {a:1,t:"頼まれる前に「これ、私がやります」と手を挙げられる"},
+  {a:1,t:"持ち味を使うことへの罪悪感（自分だけいい思いをしている等）が少ない"},
+  {a:1,t:"持ち味に見合った役割や、周りからの信頼を受け取っている"},
+  {a:1,t:"持ち味を出す場を、自分で選んでいる（与えられた場で我慢し続けていない）"},
+  {a:1,t:"持ち味を出す場を、選ぶだけでなく自分で作っている",w:1},
+
+  {a:2,t:"本当はやりたくないお願いを、断れる"},
+  {a:2,t:"「こうあるべき」より「こうしたい」で決められる日がある"},
+  {a:2,t:"人前の自分と、一人のときの自分に大きな差がない"},
+  {a:2,t:"自分の選択を、後から自分で責めていない"},
+  {a:2,t:"誰かの正解ではなく、自分の納得で選んでいる"},
+  {a:2,t:"断ったことで離れた人を、惜しいと思いながら手放せる",w:1},
+
+  {a:3,t:"うまくいかなかった日でも、自分に「よくやった」と言える"},
+  {a:3,t:"結果が出ていない時期の自分にも、価値があると感じる"},
+  {a:3,t:"誰かに認められなくても、自分の良さを保てる"},
+  {a:3,t:"自分の中に「戻ってこられる安心の場所」がある"},
+  {a:3,t:"家族や仲間に、いい意味で甘えられている"},
+  {a:3,t:"してもらうこと・受け取ることを、条件なしで受け入れられる",w:1},
+
+  {a:4,t:"半年後「こうなっていたい」を、具体的に言える"},
+  {a:4,t:"その未来を想像すると、不安よりワクワクが勝つ"},
+  {a:4,t:"すでに叶った気分で、今日動けている"},
+  {a:4,t:"「どうせ無理」より「どうやったらできるか」が先に出る"},
+  {a:4,t:"未来の自分のために、今日1つ動けている"},
+  {a:4,t:"その未来を、一人でなく仲間と先取りして祝い合えている",w:1}
+];
+
+const PHASES = [
+  {lo:96,hi:120,name:"開花",     color:"#9C7716", bg:"#F4EBD3", desc:"すでに自己実現を生きています。次は「広げる・渡す」段階。"},
+  {lo:72,hi:95, name:"開花直前", color:"#C0331C", bg:"#FAE7E1", desc:"持ち味と場がつながり始めました。あと一歩で習慣になります。"},
+  {lo:48,hi:71, name:"つぼみ",   color:"#2F5340", bg:"#E4EDDD", desc:"気づきはあります。発揮の場と自己承認が足りないだけ。"},
+  {lo:24,hi:47, name:"土づくり", color:"#554C7A", bg:"#E9E6F0", desc:"持ち味はあります。まだ隠しているか、使う許可が出ていません。"},
+  {lo:0, hi:23, name:"充電期",   color:"#5F6A62", bg:"#E7EAE3", desc:"まず安心と休息を。点数が低いのは、力の問題ではありません。"}
+];
+
+const ONE_ACTION = [
+  "今夜、自分の「できて当たり前」を1つ、紙に書き出す。",
+  "今週、頼まれる前に1つ手を挙げる。小さなことでいい。",
+  "小さな「したくない」を1つ、やらない。理由は言わなくていい。",
+  "寝る前に、今日の自分に「よくやった」を1回言う。条件をつけない。",
+  "半年後の願いを1つ、声に出して言ってみる。叶った気分で。"
+];
+const GUIDE = [
+  {w:"自分の取扱説明書をつくる", d:"持ち味を言葉にして、わが子にも周りにも渡せる形にします。言語化は、自己実現のいちばん最初の一歩です。"},
+  {w:"出番のつくり方",           d:"場は待つものではなく、選ぶもの。頼まれる前に手を挙げる練習から始めます。"},
+  {w:"境界線のワーク",           d:"「したくない」を1つ手放すと、自分らしさが戻ってきます。断ることは、わがままではありません。"},
+  {w:"絶対承認空間",             d:"ここが本丸です。結果ではなく、存在そのものを承認する土台をつくります。ここが上がると、他の4軸が自然に上がります。"},
+  {w:"予祝メソッド",             d:"叶った気分を先に受け取って、今日の一歩に変えていきます。"}
+];
+
+/* ================= 画面の組み立て ================= */
+const quizEl = document.getElementById("quiz");
+const answers = new Array(QS.length).fill(null);
+let nameText = "";
+
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function buildQuiz(){
+  let html = "", q = 0;
+  for(let a=0;a<AXES.length;a++){
+    html += '<div class="axis-group"><div class="axis-head">'
+          + '<span class="idx">'+String(a+1).padStart(2,"0")+'</span>'
+          + '<h3>'+AXES[a]+'</h3><span class="note">'+AXIS_NOTE[a]+'</span></div>'
+          + '<p class="axis-intro">'+AXIS_INTRO[a]+'</p>';
+    for(let k=0;k<6;k++){
+      const it = QS[q], num = String(q+1).padStart(2,"0");
+      html += '<div class="q" id="q'+q+'"><span class="qtext">'
+            + '<span class="qno">Q'+num+'</span>'+it.t
+            + (it.w ? '<span class="wall">+2の壁</span>' : '')
+            + '</span><table class="scale"><tr>';
+      for(let v=0;v<5;v++){
+        html += '<td><button type="button" data-q="'+q+'" data-v="'+v+'" aria-pressed="false">'
+              + '<span class="n">'+v+'</span><span class="t">'+SCALE[v]+'</span></button></td>';
+      }
+      html += '</tr></table></div>';
+      q++;
+    }
+    html += '</div>';
+  }
+  quizEl.innerHTML = html;
+
+  quizEl.addEventListener("click", e=>{
+    const b = e.target.closest("button[data-q]");
+    if(!b) return;
+    const qi = +b.dataset.q, v = +b.dataset.v;
+    answers[qi] = v;
+    quizEl.querySelectorAll('button[data-q="'+qi+'"]').forEach(x=>{
+      const on = (+x.dataset.v === v);
+      x.setAttribute("aria-pressed", on ? "true" : "false");
+      x.closest("td").classList.toggle("on", on);
+    });
+    updateProgress();
+  });
+}
+
+function answeredCount(){ return answers.filter(x=>x!==null).length; }
+function updateProgress(){
+  const n = answeredCount();
+  document.getElementById("barFill").style.width = (n/QS.length*100)+"%";
+  document.getElementById("barNum").textContent = n+" / "+QS.length;
+  document.getElementById("progressBar").style.display = "block";
+  document.getElementById("submitSection").style.display = "block";
+  document.getElementById("stemFill").style.width = (n/QS.length*100)+"%";
+}
+
+/* ================= 採点 ================= */
+function score(){
+  const ax=[0,0,0,0,0];
+  for(let i=0;i<QS.length;i++) ax[QS[i].a] += answers[i];
+  return {ax, total: ax.reduce((s,v)=>s+v,0)};
+}
+function phaseOf(t){ for(const p of PHASES) if(t>=p.lo && t<=p.hi) return p; return PHASES[0]; }
+function nearestAxis(ax){ let b=0,d=Infinity; for(let i=0;i<5;i++){const c=TARGET_STD-ax[i]; if(c<d){d=c;b=i;}} return b; }
+function highAxis(ax){ let b=0; for(let i=1;i<5;i++) if(ax[i]>ax[b]) b=i; return b; }
+function lowAxis(ax){ let b=0; for(let i=1;i<5;i++) if(ax[i]<ax[b]) b=i; return b; }
+
+/* ================= 結果 ================= */
+function showResult(){
+  const {ax,total} = score();
+  const ph = phaseOf(total);
+  const iNear=nearestAxis(ax), iHigh=highAxis(ax), iLow=lowAxis(ax);
+
+  ["intro","quizSection","submitSection","progressBar"].forEach(id=>{
+    document.getElementById(id).style.display = "none";
+  });
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("rName").textContent = nameText ? nameText+" さん" : "";
+  document.getElementById("rScore").textContent = total;
+  const pe = document.getElementById("rPhase");
+  pe.textContent = "フェーズ「"+ph.name+"」";
+  pe.style.color = ph.color; pe.style.background = ph.bg;
+  document.getElementById("rPhaseDesc").textContent = ph.desc;
+
+  let rows = '<tr><th>軸</th><th style="text-align:right">得点</th><th style="text-align:right">目標</th><th style="text-align:right">差</th></tr>';
+  for(let i=0;i<5;i++){
+    const d = ax[i]-TARGET_STD;
+    const c = d<0?"dneg":(d>0?"dpos":"dzer");
+    rows += '<tr'+((i===iHigh||i===iNear)?' class="hi"':'')+'><td>'+(i+1)+'. '+AXES[i]+(i===iNear?' ●':'')+'</td>'
+          + '<td class="n">'+ax[i]+'</td><td class="n" style="color:#79857C">'+TARGET_STD+'</td>'
+          + '<td class="n '+c+'">'+(d>0?"+":"")+d+'</td></tr>';
+  }
+  document.getElementById("axisTable").innerHTML = rows;
+
+  document.getElementById("fNear").innerHTML =
+    '<p class="cap">NEAREST STEP / いちばん近い一歩</p><p class="val">'+AXES[iNear]+'</p>'
+    +'<p>目標まであと <b>'+Math.max(0,TARGET_STD-ax[iNear])+'点</b>。5つの軸のうち、ここが最短で届きます。まずここから。</p>';
+  document.getElementById("fHigh").innerHTML =
+    '<p class="cap">ALREADY YOURS / すでに使えている持ち味</p><p class="val">'+AXES[iHigh]+'（'+ax[iHigh]+'点）</p>'
+    +'<p>ここは、人に渡せる価値になっています。隠さずに使ってください。</p>';
+  document.getElementById("fLow").innerHTML =
+    '<p class="cap">GROWTH / のびしろ</p><p class="val">'+AXES[iLow]+'（'+ax[iLow]+'点）</p>'
+    +'<p>低いのは、力がないからではありません。まだ順番がそこ、というだけ。</p>';
+
+  const w = document.getElementById("fWarn");
+  if(ax[1] >= 20 && (ax[2] <= 14 || ax[3] <= 14)){
+    w.style.display = "block";
+    w.innerHTML = '<p class="cap">ATTENTION / 頑張れてしまう人のサイン</p><p class="val">我慢で持ちこたえていませんか</p>'
+      +'<p>持ち味の発揮は高いのに、自分らしさ・自己承認が低めです。誰かを支える前に、自分を満たす順番に組み替えてください。'
+      +'ここが、いちばん大事な分岐点です。</p>';
+  } else w.style.display = "none";
+
+  document.getElementById("oneAction").textContent = ONE_ACTION[iLow];
+  document.getElementById("guideTitle").textContent = GUIDE[iLow].w;
+  document.getElementById("guideText").textContent = GUIDE[iLow].d;
+
+  drawCard(ax, total, ph);
+  sendResult(ax, total, ph, iLow);
+  document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* ================= 画像（canvas） ================= */
+function roundRect(g,x,y,w,h,r){
+  g.beginPath();
+  g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
+  g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
+}
+function drawCard(ax, total, ph){
+  const c = document.getElementById("card");
+  const W=1000, H=1400, S=2;
+  c.width=W*S; c.height=H*S;
+  const g = c.getContext("2d");
+  g.scale(S,S);
+  g.fillStyle="#FCFDFB"; g.fillRect(0,0,W,H);
+
+  const SF='"Shippori Mincho","Yu Mincho","Hiragino Mincho ProN",serif';
+  const SN='"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",system-ui,sans-serif';
+  const MO='"Roboto Mono",ui-monospace,Menlo,monospace';
+  const INK="#16211A", SOFT="#414F46", MUTED="#79857C", LINE="#D3DACF", K="#C0331C", MOSS="#2F5340";
+
+  g.textAlign="center";
+  g.fillStyle=MOSS; g.font="500 13px "+MO; g.fillText("COCORO LABO", W/2, 64);
+  g.fillStyle=INK;  g.font="700 40px "+SF; g.fillText("自己実現度診断", W/2, 118);
+  g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.moveTo(100,142); g.lineTo(W-100,142); g.stroke();
+
+  if(nameText){ g.fillStyle=SOFT; g.font="500 21px "+SF; g.fillText(nameText+" さん", W/2, 184); }
+
+  g.fillStyle=INK; g.font="700 112px "+SF;
+  const sw = g.measureText(String(total)).width;
+  g.fillText(String(total), W/2-28, 296);
+  g.textAlign="left"; g.fillStyle=MUTED; g.font="500 26px "+SN;
+  g.fillText("/ 120点", W/2-28+sw/2+10, 294);
+  g.textAlign="center";
+
+  const ptxt="フェーズ「"+ph.name+"」";
+  g.font="700 27px "+SF;
+  const pw=g.measureText(ptxt).width+52;
+  g.fillStyle=ph.bg; roundRect(g,W/2-pw/2,326,pw,48,24); g.fill();
+  g.fillStyle=ph.color; g.fillText(ptxt,W/2,358);
+  g.fillStyle=MUTED; g.font="400 19px "+SN; g.fillText(ph.desc,W/2,412);
+
+  /* --- レーダー --- */
+  const cx=W/2, cy=740, R=190;
+  const ang = i => -Math.PI/2 + i*(2*Math.PI/5);
+  const P = (i,v) => [cx+Math.cos(ang(i))*(v/MAX_AXIS)*R, cy+Math.sin(ang(i))*(v/MAX_AXIS)*R];
+
+  g.strokeStyle=LINE; g.lineWidth=1.3;
+  [6,12,18,24].forEach(v=>{
+    g.beginPath();
+    for(let i=0;i<5;i++){ const p=P(i,v); i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]); }
+    g.closePath(); g.stroke();
+  });
+  g.beginPath();
+  for(let i=0;i<5;i++){ const p=P(i,24); g.moveTo(cx,cy); g.lineTo(p[0],p[1]); }
+  g.stroke();
+
+  g.fillStyle=MUTED; g.font="400 13px "+MO; g.textAlign="right";
+  [6,12,18,24].forEach(v=> g.fillText(String(v), cx-9, cy-(v/MAX_AXIS)*R+4));
+  g.textAlign="center";
+
+  g.save(); g.setLineDash([8,6]); g.strokeStyle="#2F6FB5"; g.lineWidth=2.4;
+  g.beginPath();
+  for(let i=0;i<5;i++){ const p=P(i,TARGET_STD); i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]); }
+  g.closePath(); g.stroke(); g.restore();
+
+  g.beginPath();
+  for(let i=0;i<5;i++){ const p=P(i,ax[i]); i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]); }
+  g.closePath();
+  g.fillStyle="rgba(192,51,28,.16)"; g.fill();
+  g.strokeStyle=K; g.lineWidth=3.2; g.lineJoin="round"; g.stroke();
+  for(let i=0;i<5;i++){
+    const p=P(i,ax[i]);
+    g.beginPath(); g.arc(p[0],p[1],6.6,0,Math.PI*2);
+    g.fillStyle="#fff"; g.fill(); g.strokeStyle=K; g.lineWidth=2.4; g.stroke();
+  }
+
+  /* 軸ラベル：ラベル→値の2段。円の外側に逃がす */
+  for(let i=0;i<5;i++){
+    const c0=Math.cos(ang(i)), s0=Math.sin(ang(i));
+    const lx=cx+c0*(R+46), ly=cy+s0*(R+46);
+    g.textAlign = c0>0.25 ? "left" : (c0<-0.25 ? "right" : "center");
+    g.fillStyle=INK;  g.font="500 18px "+SF; g.fillText(AXES[i], lx, ly);
+    g.fillStyle=K;    g.font="500 17px "+MO; g.fillText(String(ax[i]), lx, ly+24);
+  }
+  g.textAlign="center";
+
+  /* 凡例 */
+  const LGY=1000;
+  g.font="400 15px "+SN; g.fillStyle=MUTED;
+  g.strokeStyle=K; g.lineWidth=3;
+  g.beginPath(); g.moveTo(W/2-232,LGY); g.lineTo(W/2-196,LGY); g.stroke();
+  g.textAlign="left"; g.fillText("あなた", W/2-186, LGY+5);
+  g.save(); g.setLineDash([7,5]); g.strokeStyle="#2F6FB5"; g.lineWidth=2.4;
+  g.beginPath(); g.moveTo(W/2-56,LGY); g.lineTo(W/2-20,LGY); g.stroke(); g.restore();
+  g.fillText("目標ライン（各軸"+TARGET_STD+"点）", W/2-10, LGY+5);
+  g.textAlign="center";
+
+  /* まとめ枠 */
+  const iNear=nearestAxis(ax), iHigh=highAxis(ax), iLow=lowAxis(ax);
+  const bw=880, bx=(W-bw)/2, by=1028, bh=172;
+  g.fillStyle="#F2F6EF"; roundRect(g,bx,by,bw,bh,6); g.fill();
+  g.strokeStyle=LINE; roundRect(g,bx,by,bw,bh,6); g.stroke();
+
+  g.textAlign="left";
+  g.fillStyle=MOSS; g.font="500 13px "+MO; g.fillText("いちばん近い一歩", bx+28, by+30);
+  g.fillStyle=INK;  g.font="700 23px "+SF;
+  g.fillText(AXES[iNear]+"　（目標まであと "+Math.max(0,TARGET_STD-ax[iNear])+"点）", bx+28, by+62);
+
+  g.fillStyle=MOSS; g.font="500 13px "+MO;
+  g.fillText("すでに使えている持ち味", bx+28, by+98);
+  g.fillText("のびしろ", bx+470, by+98);
+  g.fillStyle=INK; g.font="700 21px "+SF;
+  g.fillText(AXES[iHigh]+"（"+ax[iHigh]+"点）", bx+28, by+126);
+  g.fillText(AXES[iLow]+"（"+ax[iLow]+"点）", bx+470, by+126);
+
+  g.fillStyle=K;   g.font="500 13px "+MO; g.fillText("今日できる1つ", bx+28, by+156);
+  g.textAlign="center"; g.fillStyle=SOFT; g.font="400 17px "+SN;
+  g.fillText(ONE_ACTION[iLow], W/2, by+156);
+
+  /* footer */
+  g.strokeStyle=LINE; g.beginPath(); g.moveTo(100,1300); g.lineTo(W-100,1300); g.stroke();
+  g.fillStyle=MUTED; g.font="400 16px "+SN;
+  g.fillText("自己実現＝自分の持ち味を発揮して、自分らしく生きている状態", W/2, 1336);
+  g.font="400 14px "+MO; g.fillStyle="#9AA39C";
+  g.fillText("Cocoro Labo　自己実現度診断", W/2, 1366);
+}
+
+/* ================= 自動集計への送信 ================= */
+let sentOnce = false;
+function sendResult(ax, total, ph, iLow){
+  if(!ENDPOINT || sentOnce) return;
+  sentOnce = true;
+  const st = document.getElementById("sendState");
+  const payload = {
+    name: nameText, total: total, phase: ph.name, axes: ax,
+    low: AXES[iLow], warn: (ax[1] >= 20 && (ax[2] <= 14 || ax[3] <= 14)),
+    answers: answers.slice()
+  };
+  st.textContent = "結果を送信しています…";
+  fetch(ENDPOINT, {method:"POST", mode:"no-cors",
+    headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(payload)})
+    .then(()=>{ st.textContent = "結果はCocoro Laboに届きました。"; })
+    .catch(()=>{ sentOnce = false; st.textContent = "送信できませんでした。画像を保存して送ってください。"; });
+}
+
+/* ================= 保存・コピー・マークダウン ================= */
+function saveImage(){
+  const url = document.getElementById("card").toDataURL("image/png");
+  const a = document.createElement("a");
+  a.href = url; a.download = "自己実現度チャート_"+new Date().toISOString().slice(0,10)+".png";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function copyText(txt, btn, back){
+  const done = ()=>{ const o=btn.textContent; btn.textContent="コピーしました";
+    setTimeout(()=>btn.textContent=back||o, 2200); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, ()=>fallbackCopy(txt,done));
+  } else fallbackCopy(txt,done);
+}
+function fallbackCopy(txt,cb){
+  const ta=document.createElement("textarea");
+  ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); cb(); }catch(e){}
+  document.body.removeChild(ta);
+}
+function resultMarkdown(){
+  const {ax,total}=score(), ph=phaseOf(total);
+  const iNear=nearestAxis(ax), iHigh=highAxis(ax), iLow=lowAxis(ax);
+  let t = "【自己実現度診断 結果】"+(nameText?nameText+" さん ":"")+"\n";
+  t += "自己実現度 "+total+"点 / 120点　フェーズ「"+ph.name+"」\n\n";
+  t += "| 軸 | 得点 | 目標 | 差 |\n|---|---|---|---|\n";
+  for(let i=0;i<5;i++){ const d=ax[i]-TARGET_STD;
+    t += "| "+AXES[i]+" | "+ax[i]+"/24 | "+TARGET_STD+" | "+(d>0?"+":"")+d+" |\n"; }
+  t += "\nいちばん近い一歩："+AXES[iNear]+"\n";
+  t += "すでに使えている持ち味："+AXES[iHigh]+"\n";
+  t += "のびしろ："+AXES[iLow]+"\n";
+  t += "今日できる1つ："+ONE_ACTION[iLow]+"\n";
+  return t;
+}
+function questionnaireMarkdown(){
+  let t = "# 自己実現度診断（30問・120点）\n\n";
+  t += "> 自己実現＝自分の持ち味を発揮して、自分らしく生きている状態\n\n";
+  t += "0=ちがう / 1=あまり / 2=ふつう / 3=わりと / 4=そう\n\n";
+  for(let a=0;a<5;a++){
+    t += "## "+(a+1)+". "+AXES[a]+"\n\n";
+    for(let k=0;k<6;k++){
+      const i=a*6+k;
+      t += "- Q"+(i+1)+". "+QS[i].t+(QS[i].w?"（+2の壁）":"")+"\n";
+    }
+    t += "\n";
+  }
+  t += "## 採点\n\n- 各軸＝6問の合計（0〜24点）\n- 総合＝30問の合計（0〜120点）\n\n";
+  t += "## フェーズ\n\n96-120 開花 / 72-95 開花直前 / 48-71 つぼみ / 24-47 土づくり / 0-23 充電期\n";
+  return t;
+}
+
+/* ================= 起動 ================= */
+buildQuiz();
+document.getElementById("mdOut").textContent = questionnaireMarkdown();
+
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  const n = window.prompt("お名前（ニックネームでOK）を入れてください。空欄でも進めます。","");
+  if(n && n.trim()) nameText = n.trim();
+  updateProgress();
+  document.getElementById("intro").scrollIntoView({behavior:"smooth", block:"start"});
+});
+document.getElementById("resultBtn").addEventListener("click", ()=>{
+  const n = answeredCount();
+  if(n < QS.length){
+    const first = answers.indexOf(null);
+    document.getElementById("warnMsg").textContent = "未回答が "+(QS.length-n)+" 問あります（Q"+(first+1)+" から）。";
+    document.getElementById("q"+first).scrollIntoView({behavior:"smooth", block:"center"});
+    return;
+  }
+  document.getElementById("warnMsg").textContent = "";
+  showResult();
+});
+document.getElementById("saveBtn").addEventListener("click", saveImage);
+document.getElementById("copyBtn").addEventListener("click", function(){
+  copyText(resultMarkdown(), this, "結果をコピーする");
+});
+document.getElementById("mdCopy").addEventListener("click", function(){
+  copyText(questionnaireMarkdown(), this, "マークダウンをコピーする");
+});
+document.getElementById("againBtn").addEventListener("click", ()=>{
+  answers.fill(null);
+  sentOnce = false;
+  document.getElementById("sendState").textContent = "";
+  document.querySelectorAll('.scale button[aria-pressed="true"]').forEach(b=>{
+    b.setAttribute("aria-pressed","false"); b.closest("td").classList.remove("on");
+  });
+  document.getElementById("result").style.display="none";
+  document.getElementById("intro").style.display="block";
+  document.getElementById("quizSection").style.display="block";
+  updateProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
